@@ -24,7 +24,6 @@ include_once "global_defines.php";
 include_once "includes/timer.php";
 include_once "includes/adminlog.php";
 include_once "includes/bigtitle.php";
-include_once "includes/bnt_autoload.php";
 include_once "includes/calc_ownership.php";
 include_once "includes/checklogin.php";
 include_once "includes/collect_bounty.php";
@@ -61,6 +60,5 @@ require_once $ADOdbpath . "/adodb.inc.php";
 include_once $ADOdbpath . "/adodb-perf.inc.php";
 include_once $ADOdbpath . "/session/adodb-session2.php";
 
-spl_autoload_register('bnt_autoload');
 require_once "global_cleanups.php";
 ?>

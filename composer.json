@@ -1,0 +1,16 @@
+{
+    "name": "rdx/bnt",
+    "description": "BlackNova Traders",
+    "type": "project",
+    "license": "GNU Affero General Public License",
+    "authors": [
+        {
+            "name": "Rudie Dirkx",
+            "email": "github@hotblocks.nl"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "classmap": ["classes/"]
+    }
+}
