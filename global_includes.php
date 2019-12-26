@@ -59,7 +59,7 @@ include_once "includes/db_op_result.php";
 // supported in the future, and cryptsessions, so the session data itself is encrypted.
 require_once $ADOdbpath . "/adodb.inc.php";
 include_once $ADOdbpath . "/adodb-perf.inc.php";
-include_once $ADOdbpath . "/session/adodb-session.php";
+include_once $ADOdbpath . "/session/adodb-session2.php";
 
 spl_autoload_register('bnt_autoload');
 require_once "global_cleanups.php";

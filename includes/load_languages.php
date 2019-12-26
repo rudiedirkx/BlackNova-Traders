@@ -39,9 +39,7 @@ function load_languages ($db = NULL, $language = NULL, $categories = NULL, &$lan
         while ($result && !$result->EOF)
         {
             $row = $result->fields;
-            global $$row['name'];
-            $$row['name'] = $row['value'];
-            $langvars[$row['name']] = $row['value'];
+            $GLOBALS[$row['name']] = $langvars[$row['name']] = $row['value'];
             $result->MoveNext();
         }
     }

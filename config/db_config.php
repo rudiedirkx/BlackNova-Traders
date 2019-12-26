@@ -28,14 +28,14 @@ $dbport = "";
 
 // Hostname and port of the database server:
 // These are defaults, you normally won't have to change them
-$ADODB_SESSION_CONNECT = "127.0.0.1";
+$ADODB_SESSION_CONNECT = "localhost";
 
 // Username and password to connect to the database:
-$ADODB_SESSION_USER = "bnt";
-$ADODB_SESSION_PWD = "bnt";
+$ADODB_SESSION_USER = getenv('DB_USER');
+$ADODB_SESSION_PWD = getenv('DB_PASS');
 
 // Name of the SQL database:
-$ADODB_SESSION_DB = "bnt";
+$ADODB_SESSION_DB = getenv('DB_NAME');
 
 // Define a random crypto key for ADOdb to use for encrypted sessions.
 $ADODB_CRYPT_KEY = "ptjsiaanxyhdhjz";
@@ -54,7 +54,7 @@ $ADODB_CRYPT_KEY = "ptjsiaanxyhdhjz";
 // "postgres7" for PostgreSQL ver 7 and up
 // "sybase" for a SyBase database
 // NOTE: only mysqlt works as of this release.
-$ADODB_SESSION_DRIVER = "mysqlt";
+$ADODB_SESSION_DRIVER = "mysqli";
 
 // Set this to 1 to use db persistent connections, 0 otherwise - persistent connections can cause load problems!
 $db_persistent = 0;
@@ -63,7 +63,7 @@ $db_persistent = 0;
 // one game of BNT on the same database, or if the current table
 // names conflict with tables you already have in your db, you will
 // need to change this
-$db_prefix = "bnt_";
+$db_prefix = "";
 
 // The following two settings are now set automatically in global_cleanups.
 // If it does not work, you'll need to comment them out, and uncomment and set the variables listed below.

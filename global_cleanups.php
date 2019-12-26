@@ -83,7 +83,7 @@ if (!$index_page)
 }
 
 // reg_global_fix,0.1.1,22-09-2004,BNT DevTeam
-if (!defined('reg_global_fix'))define('reg_global_fix', True, TRUE);
+if (!defined('reg_global_fix'))define('reg_global_fix', TRUE);
 
 foreach ($_POST as $k=>$v)
 {
