@@ -59,7 +59,7 @@ else
     echo "<div style='color:#FFF; width:400px; text-align:left; font-size:12px; padding:6px;'>{$l_mail_noplayer}</div>\n";
 
     echo "<br>\n";
-    if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true)
+    if (!empty($_SESSION['logged_in']))
     {
         TEXT_GOTOMAIN();
     }

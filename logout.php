@@ -23,16 +23,14 @@ include "config/config.php";
 load_languages($db, $lang, array('logout', 'common', 'global_includes', 'global_funcs', 'combat', 'footer', 'news'), $langvars, $db_logging);
 
 $title = $l_logout;
-setcookie ("userpass", "", 0, $gamepath, $gamedomain);
-setcookie ("userpass", "", 0); // Delete from default path as well.
 $_SESSION['logged_in'] = false;
 
 // Clear the session array, clear the session cookie
 $_SESSION = array();
-setcookie("PHPSESSID","",0,"/");
+setcookie(session_name(),"",0,"/");
 
 // Destroy the session entirely
-session_destroy();
+@session_destroy();
 
 include "header.php";
 $current_score = 0;

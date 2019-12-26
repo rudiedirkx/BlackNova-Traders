@@ -32,9 +32,9 @@ if ($_POST['email'] != null)
     if ($res)
     {
         $playerfound = $res->RecordCount();
+        $playerinfo = $res->fields;
+        $lang = $playerinfo['lang'];
     }
-    $playerinfo = $res->fields;
-    $lang = $playerinfo['lang'];
 }
 
 if (!isset($_GET['lang']))
@@ -51,10 +51,6 @@ else
 
 // New database driven language entries
 load_languages($db, $lang, array('login2', 'login', 'common', 'global_includes', 'global_funcs', 'footer', 'news'), $langvars, $db_logging);
-
-// first placement of cookie - don't use updatecookie.
-$userpass = $email."+".$pass;
-setcookie("userpass", $userpass, time() + (3600*24)*365, $gamepath, $gamedomain);
 
 if ($server_closed)
 {
@@ -78,8 +74,6 @@ if (isset($playerinfo))
     db_op_result ($db, $res, __LINE__, __FILE__, $db_logging);
     if ($res->RecordCount() != 0)
     {
-        setcookie("userpass", "", 0, $gamepath, $gamedomain);
-        setcookie("userpass", "", 0); // Delete from default path as well.
         $banned = 1;
     }
 }
@@ -98,7 +92,7 @@ if ($playerfound)
             $stamp = date("Y-m-d H-i-s");
             $update = $db->Execute("UPDATE {$db->prefix}ships SET last_login='$stamp',ip_address='$ip' WHERE ship_id=$playerinfo[ship_id]");
             db_op_result ($db, $update, __LINE__, __FILE__, $db_logging);
-            $_SESSION['logged_in'] = true;
+            $_SESSION['logged_in'] = $playerinfo['ship_id'];
             TEXT_GOTOMAIN();
             header("Location: main.php"); // This redirect avoids any rendering for the user of login2. Its a direct transition, visually
         }

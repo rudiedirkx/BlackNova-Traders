@@ -26,12 +26,6 @@ if (checklogin () )
 global $l_opt2_title;
 $title = $l_opt2_title;
 
-if ($newpass1 == $newpass2 && $password == $oldpass && $newpass1 != "")
-{
-    $userpass = $username."+".$newpass1;
-    setcookie("userpass", $userpass, time()+(3600*24)*365, $gamepath, $gamedomain);
-}
-
 if (!preg_match("/^[\w]+$/", $newlang))
 {
     $newlang = $default_lang;

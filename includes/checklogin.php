@@ -26,34 +26,30 @@ function checklogin ()
 {
     $flag = 0;
 
-    global $username, $password, $db, $l;
-
-    $result1 = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE email=? LIMIT 1", array($username));
-    db_op_result ($db, $result1, __LINE__, __FILE__);
-    $playerinfo = $result1->fields;
+    global $playerinfo, $db, $l;
 
     // Check the cookie to see if username/password are empty - check password against database
-    if ($username == "" or $password == "" or $password != $playerinfo['password'])
+    if (!$playerinfo)
     {
+        $_SESSION['logged_in'] = false;
+
         $title = $l->get('l_error');
         include "header.php";
         echo str_replace("[here]", "<a href='index.php'>" . $l->get('l_here') . "</a>", $l->get('l_global_needlogin'));
         include "footer.php";
-        $flag = 1;
+
+        return 1;
     }
 
-    if ($playerinfo)
-    {
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $stamp = date("Y-m-d H:i:s");
-        $timestamp['now']  = (int)strtotime ($stamp);
-        $timestamp['last'] = (int)strtotime ($playerinfo['last_login']);
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $stamp = date("Y-m-d H:i:s");
+    $timestamp['now']  = (int)strtotime ($stamp);
+    $timestamp['last'] = (int)strtotime ($playerinfo['last_login']);
 
-        // Update the players last_login ever 60 seconds to cut back SQL Queries.
-        if($timestamp['now'] >= ($timestamp['last'] +60))
-        {
-            $update = $db->Execute("UPDATE {$db->prefix}ships SET last_login = ?, ip_address = ? WHERE ship_id = ?;", array($stamp, $ip, $playerinfo['ship_id']));
-        }
+    // Update the players last_login ever 60 seconds to cut back SQL Queries.
+    if($timestamp['now'] >= ($timestamp['last'] +60))
+    {
+        $update = $db->Execute("UPDATE {$db->prefix}ships SET last_login = ?, ip_address = ? WHERE ship_id = ?;", array($stamp, $ip, $playerinfo['ship_id']));
     }
 
     // Check for destroyed ship
@@ -89,4 +85,3 @@ function checklogin ()
 
     return $flag;
 }
-?>

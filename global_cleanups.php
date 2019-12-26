@@ -45,20 +45,8 @@ else
 
 ini_set('url_rewriter.tags', ''); // Ensure that the session id is *not* passed on the url - this is a possible security hole for logins - including admin.
 
-global $ADODB_CRYPT_KEY;
-global $ADODB_SESSION_CONNECT, $ADODB_SESSION_USER, $ADODB_SESSION_DB;
-
-$ADODB_SESS_CONN = '';
-$ADODB_SESSION_TBL = $db_prefix . "sessions";
-
-// We explicitly use encrypted sessions, but this adds compression as well.
-ADODB_Session::encryptionKey($ADODB_CRYPT_KEY);
-
-// The data field name "data" violates SQL reserved words - switch it to SESSDATA
-ADODB_Session::dataFieldName('SESSDATA');
-
 global $db;
-connectdb ();
+connectdb();
 $db->prefix = $db_prefix;
 $db->logging = $db_logging;
 
@@ -73,14 +61,7 @@ if (!isset($index_page))
     $index_page = false;
 }
 
-if (!$index_page)
-{
-    // Ensure that we do not set cookies on the index page, until the player chooses to allow them.
-    if (!isset($_SESSION))
-    {
-        session_start();
-    }
-}
+session_start();
 
 // reg_global_fix,0.1.1,22-09-2004,BNT DevTeam
 if (!defined('reg_global_fix'))define('reg_global_fix', TRUE);
@@ -107,37 +88,24 @@ foreach ($_COOKIE as $k=>$v)
     }
 }
 
-if (!isset($userpass))
-{
-    $userpass = '';
-}
-
-if ($userpass != '' and $userpass != '+')
-{
-    $username = substr ($userpass, 0, strpos ($userpass, "+"));
-    $password = substr ($userpass, strpos ($userpass, "+")+1);
-}
-
 $lang = $default_lang;
+$playerinfo = $playerfound = $username = null;
 
-if (empty($username))  // If the user has not logged in
-{
-    if (array_key_exists('lang', $_GET)) // And the user has chosen a language on index.php
+if (!empty($_SESSION['logged_in'])) {
+    $id = $_SESSION['logged_in'];
+    $res = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE ship_id='$id'");
+    db_op_result ($db, $res, __LINE__, __FILE__, $db_logging);
+    if ($res && ($playerfound = $res->RecordCount()))
     {
-        $lang = $_GET['lang'];  // Set $lang to the language the user has chosen
+        $playerinfo = $res->fields;
+        $username = $playerinfo['email'];
+        $lang = $playerinfo['lang'];
     }
 }
-else // The user has logged in, so use his preference from the database
-{
-    $res = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE email='$username'");
-    db_op_result ($db, $res, __LINE__, __FILE__, $db_logging);
-    if ($res)
-    {
-        $playerfound = $res->RecordCount();
-    }
 
-    $playerinfo = $res->fields;
-    $lang = $playerinfo['lang'];
+if (!$playerinfo && isset($_GET['lang']))
+{
+    $lang = $_GET['lang'];
 }
 
 $avail_lang[0]['file'] = 'english';
@@ -234,4 +202,3 @@ if (isset($gamedomain) && strlen($gamedomain) >0)
     }
 }
 // Game domain setting ends
-?>

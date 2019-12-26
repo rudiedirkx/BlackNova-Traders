@@ -1,5 +1,8 @@
-<?php ?>
-<!--
+<?php
+
+header('Content-type: application/javascript; charset=utf-8');
+
+?>
 var myi = '<?php echo $_GET['mySEC'];?>';
 setTimeout("rmyx();",1000);
 
@@ -13,4 +16,3 @@ function rmyx()
     document.getElementById("myx").innerHTML = myi;
     setTimeout("rmyx();",1000);
 }
--->

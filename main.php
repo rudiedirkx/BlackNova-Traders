@@ -35,10 +35,6 @@ include "header.php";
 $stylefontsize = "12Pt";
 $picsperrow = 7;
 
-$res = $db->Execute("SELECT * FROM {$db->prefix}ships WHERE email='$username'");
-db_op_result ($db, $res, __LINE__, __FILE__, $db_logging);
-$playerinfo = $res->fields;
-
 if ($playerinfo['cleared_defences'] > ' ')
 {
     echo $l->get('l_incompletemove') . " <br>";
@@ -837,4 +833,3 @@ echo "&nbsp;<a class=dis href=\"lrscan.php?sector=*\">[" . $l->get('l_fullscan')
 <?php
 
 include "footer.php";
-?>
